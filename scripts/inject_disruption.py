@@ -39,19 +39,15 @@ def inject_disruptions(route_id: int):
         affected = random.sample(stops, min(NUM_STOPS_TO_DISRUPT, len(stops)))
 
         for stop in affected:
-            delay = timedelta(minutes=random.randint(MIN_DELAY_MINUTES, MAX_DELAY_MINUTES))
+            delay_minutes = random.randint(MIN_DELAY_MINUTES, MAX_DELAY_MINUTES)
 
-            # planned_eta starts out equal to window_start (on-time) if unset
-            base_time = stop.planned_eta or stop.window_start
-            stop.planned_eta = base_time + delay
+            stop.extra_delay_minutes = delay_minutes
             stop.status = "delayed"
 
             session.add(stop)
 
-            late_by = stop.planned_eta > stop.window_end
             print(
-                f"Stop {stop.id} ({stop.address}): delayed by {delay}. "
-                f"{'NOW MISSES its window' if late_by else 'still within window'}."
+                f"Stop {stop.id} ({stop.address}): delayed by {delay_minutes} minutes."
             )
 
         session.commit()

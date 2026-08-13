@@ -10,7 +10,7 @@ ADDRESSES = [
     "60 Webster Ave, Cambridge, MA 02141",
     "100 Main St, Cambridge, MA 02142",
     "12 Brattle St, Cambridge, MA 02138",
-    "540 Main Street, Medford, MA 02155",
+    "540 Main St, Medford, MA 02155",
     "45 Salem St, Medford, MA 02155",
     "450 Broadway, Somerville, MA 02145",
     "12 Washington St, Somerville, MA 02143",

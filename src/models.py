@@ -24,6 +24,7 @@ class Stop(SQLModel, table=True):
     planned_eta: Optional[datetime] = None
     actual_arrival: Optional[datetime] = None
     status: str = "pending"  # pending | en_route | delivered | delayed | rerouted
+    extra_delay_minutes: int = 0  # set by inject_disruption.py; read by evaluate_stop_order
 
 
 class Route(SQLModel, table=True):
