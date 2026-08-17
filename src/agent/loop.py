@@ -10,6 +10,7 @@ from openai import OpenAI
 
 from src.agent.tool_schemas import TOOLS
 from src.agent.harness import execute_tool_with_guardrails
+from src.agent.skills import run_disruption_response
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -21,11 +22,11 @@ def run_loop(route_id: int):
         {
             "role": "system",
             "content": (
-                "You are a logistics dispatcher assistant. You have tools to "
-                "check a route's status and propose reroutes when stops are "
-                "delayed. Check the route status first. If stops have missed "
-                "their windows, consider proposing a reroute. Explain your "
-                "reasoning clearly."
+                "You are a logistics dispatcher assistant. For routine route checks, "
+                "use the disruption_response tool - it handles checking status and "
+                "proposing a reroute if needed in one step. Only use check_route_status "
+                "or propose_reroute individually if you need something outside that "
+                "standard flow. Explain your reasoning clearly."
             ),
         },
         {
@@ -60,7 +61,10 @@ def run_loop(route_id: int):
 
             # this now goes through the harness - guardrails, logging,
             # and error handling all happen inside this one call
-            result_text = execute_tool_with_guardrails(tool_name, arguments)
+            if tool_name == "disruption_response":
+                result_text = run_disruption_response(arguments["route_id"])
+            else:
+                result_text = execute_tool_with_guardrails(tool_name, arguments)
 
             print(f"[Tool result:]\n{result_text}\n")
 

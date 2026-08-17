@@ -50,4 +50,27 @@ TOOLS = [
             },
         },
     },
+    {
+        "type": "function",
+        "function": {
+            "name": "disruption_response",
+            "description": (
+                "Run the standard disruption-response procedure for a route: "
+                "check its status, and if any stops have missed their delivery "
+                "window, automatically check for a reroute that would help. "
+                "Use this for routine checks instead of calling "
+                "check_route_status and propose_reroute separately."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "route_id": {
+                        "type": "integer",
+                        "description": "The ID of the route to run the disruption-response check on.",
+                    }
+                },
+                "required": ["route_id"],
+            },
+        },
+    },
 ]
